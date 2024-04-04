@@ -10,8 +10,16 @@
     <form th:action="@{/books/new-book-process}"  method="POST"  th:object	="${book}">
       <label for="book-name">Ad:</label>
       <input id="book-name"  type="text"  th:field="*{name}" />
+      
       <label for="book-price">Qiymət:</label>
-      <input id="book-price"  type="text"  th:field="*{price}" />
+      <input id="book-price"  type="number"  th:field="*{price}" />
+      
+      <label for="book-author">Müəllif:</label>
+      <input id="book-author"  type="text"  th:field="*{author}" />
+      
+      <label for="book-page-count">Səhifə sayı:</label>
+      <input id="book-page-count"  type="number"  th:field="*{pageCount}" />
+      
       <label for="book-description">Təsvir:</label>
       <textarea id="book-description"  th:field="*{description}" ></textarea>
       <input type="submit"  value="Qeydiyyat" />
