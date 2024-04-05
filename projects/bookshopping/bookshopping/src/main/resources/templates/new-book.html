@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title th:text="${header}">Yeni kitab</title>
     <link rel="stylesheet" href="	https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -15,6 +15,7 @@
 </head>
 
 <body>
+ 	<div th:replace="menu :: menu"></div>
     <h1 th:text="${header}" style="text-align:center; color:gray">Yeni kitab</h1>
     <form th:action="@{/books/new-book-process}" method="POST" th:object="${book}" id="book-register-form">
             <input type="hidden" th:field="*{id}"/>
