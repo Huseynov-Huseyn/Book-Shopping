@@ -49,9 +49,6 @@
             cursor: pointer;
         }
 
-        a {
-            margin-right: 5px;
-        }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -67,7 +64,7 @@
 
 <body>
 	<div th:replace="menu :: menu"></div>
-    <a th:href="@{/books/new}" id="new-book-button">Yeni Kitab </a>
+    <a th:href="@{/books/new}" id="new-book-button" >Yeni Kitab </a>
     <a th:href="@{/home}">Əsas səhifə</a>
     <table id="books-table">
         <thead>
