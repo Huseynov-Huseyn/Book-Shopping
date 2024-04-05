@@ -1,70 +1,93 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kitablar</title>
-<style>
-    table,th,td {
-      border: 3px solid blue;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th{
-      padding: 5px;
-      background-color: gray;
-    }
-    td{
-      padding: 5px;
-      background-color: black;
-      color:white;
-    }
-    td:hover{
-    color:green;
-    cursor:pointer;
-    }
-    #new-book-button{
-    display:block;
-    width:150px;
-    text-align:center;
-    text-decoration:none;
-    border-radius:10px;
-    padding:5px 10px;
-    background-color:rgb(144,217,71);
-    }
-     #new-book-button:hover{
-     background-color:rgb(144,217,171);
-     cursor:pointer;
-     }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitablar</title>
+    <style>
+        table,
+        th,
+        td {
+            border: 3px solid blue;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            padding: 5px;
+            background-color: gray;
+        }
+
+        td {
+            padding: 5px;
+            background-color: black;
+            color: white;
+        }
+
+        td:hover {
+            color: green;
+            cursor: pointer;
+        }
+
+        #new-book-button {
+            display: block;
+            width: 150px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            padding: 5px 10px;
+            background-color: rgb(144, 217, 71);
+        }
+
+        #new-book-button:hover {
+            background-color: rgb(144, 217, 171);
+            cursor: pointer;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#books-table').DataTable();
+        });
+    </script>
 </head>
+
 <body>
-<a th:href="@{/books/new}" id="new-book-button">Yeni Kitab </a>
-	<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Ad</th>
-				<th>Təsvir</th>
-				<th>Qiymət</th>
-				<th>Müəllif</th>
-				<th>Səhifə sayı</th>
-				<th>Şəkil</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="book : ${books}">
-			<td th:text="${book.id}"></td>
-			<td th:text="${book.name}"></td>
-			<td th:text="${book.description}"></td>
-			<td th:text="${book.price}"></td>
-			<td th:text="${book.author}"></td>
-			<td th:text="${book.pageCount}"></td>
-			<td th:text="${book.image}"></td>
-			</tr>
-		</tbody>
-	</table>
+    <a th:href="@{/books/new}" id="new-book-button">Yeni Kitab </a>
+    <a th:href="@{/home}">Əsas səhifə</a>
+    <table id="books-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ad</th>
+                <th>Təsvir</th>
+                <th>Qiymət</th>
+                <th>Müəllif</th>
+                <th>Səhifə sayı</th>
+                <th>Şəkil</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.id}"></td>
+                <td th:text="${book.name}"></td>
+                <td th:text="${book.description}"></td>
+                <td th:text="${book.price}"></td>
+                <td th:text="${book.author}"></td>
+                <td th:text="${book.pageCount}"></td>
+                <td th:text="${book.image}"></td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
+
 </html>
