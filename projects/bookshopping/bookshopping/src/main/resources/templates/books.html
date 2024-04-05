@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="	https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,8 +48,10 @@
             background-color: rgb(144, 217, 171);
             cursor: pointer;
         }
-        a{
-        margin-right:5px;}
+
+        a {
+            margin-right: 5px;
+        }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -74,7 +77,7 @@
                 <th>Müəllif</th>
                 <th>Səhifə sayı</th>
                 <th>Şəkil</th>
-                 <th>Əməliyyatlar</th>
+                <th>Əməliyyatlar</th>
             </tr>
         </thead>
         <tbody>
@@ -86,7 +89,10 @@
                 <td th:text="${book.author}"></td>
                 <td th:text="${book.pageCount}"></td>
                 <td th:text="${book.image}"></td>
-                <td><a  th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger">Sil</a> <a class="btn btn-primary">Redakte</a> </td>
+                <td>
+                    <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger">Sil</a>
+                    <a th:href="@{/books/edit/	{id}(id=${book.id})}" class="btn btn-primary">Redakte</a>
+                </td>
             </tr>
         </tbody>
     </table>

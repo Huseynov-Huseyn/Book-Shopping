@@ -15,8 +15,10 @@
 </head>
 
 <body>
-    <h1 style="text-align:center;">Yeni kitab</h1>
+    <h1 th:text="${header}" style="text-align:center; color:gray">Yeni kitab</h1>
     <form th:action="@{/books/new-book-process}" method="POST" th:object="${book}" id="book-register-form">
+            <input type="hidden" th:field="*{id}"/>
+
         <div class="form-group">
             <label for="book-name">Ad:</label>
             <input id="book-name" type="text" th:field="*{name}" class="form-control" />
@@ -24,7 +26,7 @@
 
         <div class="form-group">
             <label for="book-price">Qiymət:</label>
-            <input id="book-price"  type="number"  th:field="*{price}" class="form-control" />
+            <input id="book-price" type="number" th:field="*{price}" class="form-control" />
         </div>
 
         <div class="form-group">
@@ -42,9 +44,9 @@
             <textarea id="book-description" th:field="*{description}" class="form-control"></textarea>
         </div>
 
-        <input type="submit" value="Qeydiyyat"  class="btn btn-success"/>
+        <input type="submit" value="Yadda saxla" class="btn btn-success" />
     </form>
-        <a th:href="@{/books}">Kitablarin siyahısı</a>
+    <a th:href="@{/books}">Kitablarin siyahısı</a>
 </body>
 
 </html>
