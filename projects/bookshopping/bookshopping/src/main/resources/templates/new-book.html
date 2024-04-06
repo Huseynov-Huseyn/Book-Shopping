@@ -33,16 +33,19 @@
         <div class="form-group">
             <label for="book-price">Qiymət:</label>
             <input id="book-price" type="number" th:field="*{price}" class="form-control" />
+        	<span class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}	"></span>
         </div>
 
         <div class="form-group">
             <label for="book-author">Müəllif:</label>
             <input id="book-author" type="text" th:field="*{author}" class="form-control" />
+        	<span class="error-message" th:if="${#fields.hasErrors('author')}" th:errors="*{author}	"></span>
         </div>
 
         <div class="form-group">
             <label for="book-page-count">Səhifə sayı:</label>
             <input id="book-page-count" type="number" th:field="*{pageCount}" class="form-control" />
+       		<span class="error-message" th:if="${#fields.hasErrors('pageCount')}" th:errors="*{pageCount}	"></span>
         </div>
 
         <div class="form-group">

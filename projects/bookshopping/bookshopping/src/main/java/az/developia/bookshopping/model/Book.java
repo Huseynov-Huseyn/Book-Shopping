@@ -6,7 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -21,10 +24,17 @@ public class Book {
 	@Column(columnDefinition = "VARCHAR(30)")
 	private String name;
 	@Column(columnDefinition = "VARCHAR(300)")
-	@Size(max = 300, message = "Ad max 300 simvoldan ibarət olmalıdır!")
+	@Size(max = 300, message = "Təsvir max 300 simvoldan ibarət olmalıdır!")
 	private String description;
+	@Min(value = 0, message = "Qiymət min 0 ola bilər!")
+	@Max(value = 1000, message = "Qiymət max 1000 ola bilər!")
+	@NotNull(message = "Boş qoymaq olmaz!")
 	private double price;
+	@Column(columnDefinition = "VARCHAR(50)")
+	@Size(max = 50, message = "Müəllif adı max 50 simvoldan ibarət olmalıdır!")
 	private String author;
+	@Min(value = 0, message = "Səhifə sayı min 0 ola bilər!")
+	@Max(value = 10000, message = "Səhifə sayı max 10000 ola bilər!")
 	private Integer pageCount;
 	private String image;
 	private String username;
