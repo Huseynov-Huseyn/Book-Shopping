@@ -1,11 +1,13 @@
 package az.developia.bookshopping.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "Book")
@@ -13,8 +15,13 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@NotEmpty(message = "Boş qoymaq olmaz")
+	@NotEmpty(message = "Boş qoymaq olmaz!")
+	@Size(min = 2, message = "Ad min 2 simvoldan ibarət olmalıdır!")
+	@Size(max = 30, message = "Ad max 30 simvoldan ibarət olmalıdır!")
+	@Column(columnDefinition = "VARCHAR(30)")
 	private String name;
+	@Column(columnDefinition = "VARCHAR(300)")
+	@Size(max = 300, message = "Ad max 300 simvoldan ibarət olmalıdır!")
 	private String description;
 	private double price;
 	private String author;
