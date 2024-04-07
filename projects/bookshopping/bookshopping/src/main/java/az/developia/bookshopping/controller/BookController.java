@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import az.developia.bookshopping.config.MySession;
 import az.developia.bookshopping.dao.BookDAO;
 import az.developia.bookshopping.model.Book;
 import jakarta.validation.Valid;
@@ -21,6 +22,9 @@ public class BookController {
 
 	@Autowired
 	private BookDAO bookDAO;
+
+	@Autowired
+	private MySession mySession;
 
 	@GetMapping(path = "/books")
 	public String showBooks(Model model) {
@@ -43,7 +47,7 @@ public class BookController {
 			return "new-book";
 		}
 		book.setImage("book.jpg");
-		book.setUsername("DEA");
+		book.setUsername(mySession.getUsername());
 		bookDAO.save(book);
 		List<Book> books = bookDAO.findAll();
 		model.addAttribute("books", books);
