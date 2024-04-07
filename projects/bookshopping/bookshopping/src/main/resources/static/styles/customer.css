@@ -1,7 +1,5 @@
-
 #main-content {
-    border: 3px solid black;
-    overflow: auto;
+	overflow: auto;
     padding: 10px;
 }
 
@@ -32,6 +30,9 @@
 .book-author,
 .book-page-count {
     display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .book-name::before {
