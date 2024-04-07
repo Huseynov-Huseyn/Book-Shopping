@@ -30,9 +30,11 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf().disable().authorizeRequests().requestMatchers(HttpMethod.GET, "/").permitAll().anyRequest()
-				.authenticated().and().formLogin().loginPage("/show-login").loginProcessingUrl("/authenticate-user")
-				.permitAll().and().logout().and().httpBasic().and().build();
+		return http.csrf().disable().authorizeRequests().requestMatchers(HttpMethod.GET, "/").permitAll()
+				.requestMatchers(HttpMethod.GET, "/create-account").permitAll()
+				.requestMatchers(HttpMethod.POST, "/create-account-process").permitAll().anyRequest().authenticated()
+				.and().formLogin().loginPage("/show-login").loginProcessingUrl("/authenticate-user").permitAll().and()
+				.logout().and().httpBasic().and().build();
 
 	}
 
