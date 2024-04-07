@@ -20,12 +20,13 @@
                 <span class="book-name" th:text="${book.name}" th:title="${book.name}"></span>
                 <span class="book-price" th:text="${book.price}" th:title="${book.price}"></span>
                 <span class="book-author" th:text="${book.author}" th:title="${book.author}"></span>
-                <span class="book-page-count" th:text="${book.pageCount}"  th:title="${book.pageCount}"></span>
+                <span class="book-page-count" th:text="${book.pageCount}" th:title="${book.pageCount}"></span>
                 <span class="book-description" th:text="${book.description}" th:title="${book.description}"></span>
                 <div class="add-to-basket"><button class="add-to-basket-btn btn btn-primary">Səbətə at</button></div>
             </div>
         </div>
         <button class="btn btn-primary" id="open-basket-btn">Səbət <span class="badge badge-light">14</span></button>
+        <input class="form-control" id="search-input" placeholder="Axtarış">
     </div>
 </body>
 
