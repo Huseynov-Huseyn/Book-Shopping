@@ -26,6 +26,8 @@ public class UserDAO {
 				userExists = true;
 				ps.close();
 			} else {
+				rs.close();
+				ps.close();
 				ps = conn.prepareStatement("insert into users (username,password,enabled) values (?,?,?);");
 				ps.setString(1, user.getUsername());
 				ps.setString(2, "{noop}" + user.getPassword());
@@ -36,11 +38,9 @@ public class UserDAO {
 				ps = conn.prepareStatement("insert into authorities (username,authority) values (?,?);");
 				ps.setString(1, user.getUsername());
 				ps.setString(2, "ROLE_ADMIN");
-
 				ps.executeUpdate();
 				ps.close();
 			}
-			rs.close();
 			conn.close();
 		}
 

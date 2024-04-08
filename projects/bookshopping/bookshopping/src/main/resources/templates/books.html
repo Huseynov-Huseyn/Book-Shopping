@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="	https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,14 +16,22 @@
             $('#books-table').DataTable();
         });
     </script>
+    <style>
+        #username {
+            display: inline-block;
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
     <div th:replace="menu :: menu"></div>
     <div class="container-fluid">
-        <a class="btn btn-success" th:href="@{/books/new}" id="new-book-button">Yeni Kitab </a>
-        <a class="btn btn-primary" th:href="@{/home}">Əsas səhifə</a>
-		<div style="height:5px;"></div>
+        <a class="btn btn-success" th:href="@{/books/new}" id="new-book-button">Yeni Kitab </a> <a
+            class="btn btn-primary" th:href="@{/home}">Əsas səhifə</a> <span id="username" th:text="${username}"></span>
+        <div style="height: 5px;"></div>
         <table id="books-table" class="table table-hover table-bordered table-striped">
             <thead>
                 <tr>
@@ -45,8 +54,7 @@
                     <td th:text="${book.author}"></td>
                     <td th:text="${book.pageCount}"></td>
                     <td th:text="${book.image}"></td>
-                    <td>
-                        <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger"
+                    <td><a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-danger"
                             th:onclick="if(!(confirm('Kitabı silməyə əminsiniz?'))) return false">Sil</a>
                         <a th:href="@{/books/edit/	{id}(id=${book.id})}" class="btn btn-primary">Redakte</a>
                     </td>
@@ -55,4 +63,5 @@
         </table>
     </div>
 </body>
+
 </html>
