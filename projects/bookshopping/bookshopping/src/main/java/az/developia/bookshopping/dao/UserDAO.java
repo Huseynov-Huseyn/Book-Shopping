@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import az.developia.bookshopping.model.User;
@@ -13,6 +14,8 @@ import az.developia.bookshopping.model.User;
 public class UserDAO {
 	@Autowired
 	private javax.sql.DataSource dataSource;
+
+	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	public boolean createUser(User user) {
 		boolean userExists = false;
@@ -30,7 +33,7 @@ public class UserDAO {
 				ps.close();
 				ps = conn.prepareStatement("insert into users (username,password,enabled) values (?,?,?);");
 				ps.setString(1, user.getUsername());
-				ps.setString(2, "{noop}" + user.getPassword());
+				ps.setString(2, "{bcrypt}" + passwordEncoder.encode(user.getPassword()));
 				ps.setByte(3, (byte) 1);
 				ps.executeUpdate();
 				ps.close();
