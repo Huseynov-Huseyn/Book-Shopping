@@ -21,7 +21,7 @@
 <body>
     <div th:replace="menu :: menu"></div>
     <h1 th:text="${header}" style="text-align:center; color:gray">Yeni kitab</h1>
-    <form th:action="@{/books/new-book-process}" method="POST" th:object="${book}" id="book-register-form">
+    <form th:action="@{/books/new-book-process}" method="POST" th:object="${book}" id="book-register-form" enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}" />
 
         <div class="form-group">
@@ -33,25 +33,30 @@
         <div class="form-group">
             <label for="book-price">Qiymət:</label>
             <input id="book-price" type="number" th:field="*{price}" class="form-control" />
-        	<span class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}	"></span>
+            <span class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}	"></span>
         </div>
 
         <div class="form-group">
             <label for="book-author">Müəllif:</label>
             <input id="book-author" type="text" th:field="*{author}" class="form-control" />
-        	<span class="error-message" th:if="${#fields.hasErrors('author')}" th:errors="*{author}	"></span>
+            <span class="error-message" th:if="${#fields.hasErrors('author')}" th:errors="*{author}	"></span>
         </div>
 
         <div class="form-group">
             <label for="book-page-count">Səhifə sayı:</label>
             <input id="book-page-count" type="number" th:field="*{pageCount}" class="form-control" />
-       		<span class="error-message" th:if="${#fields.hasErrors('pageCount')}" th:errors="*{pageCount}	"></span>
+            <span class="error-message" th:if="${#fields.hasErrors('pageCount')}" th:errors="*{pageCount}	"></span>
         </div>
 
         <div class="form-group">
             <label for="book-description">Təsvir:</label>
             <textarea id="book-description" th:field="*{description}" class="form-control"></textarea>
-			<span class="error-message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}	"></span>
+            <span class="error-message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}	"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="book-image">Şəkil:</label>
+            <input id="book-image" type="file" class="form-control" name="imageFile" accept="image/x-png,image/jpeg,image/jpeg"/>
         </div>
 
         <input type="submit" value="Yadda saxla" class="btn btn-success" />

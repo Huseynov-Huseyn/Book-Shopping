@@ -23,6 +23,7 @@ target/
 /nbproject/private/
 /nbbuild/
 /dist/
+/upload-dir-book-shoping-spring-ajax/
 /nbdist/
 /.nb-gradle/
 build/

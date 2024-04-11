@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import az.developia.bookshopping.config.MySession;
 import az.developia.bookshopping.dao.BookDAO;
+import az.developia.bookshopping.file.StorageService;
 import az.developia.bookshopping.model.Book;
 import jakarta.validation.Valid;
 
@@ -25,6 +28,9 @@ public class BookController {
 
 	@Autowired
 	private MySession mySession;
+
+	@Autowired
+	private StorageService storageService;
 
 	@GetMapping(path = "/books")
 	public String showBooks(Model model) {
@@ -44,12 +50,15 @@ public class BookController {
 	}
 
 	@PostMapping(path = "/books/new-book-process")
-	public String saveBook(@Valid @ModelAttribute(name = "book") Book book, BindingResult result, Model model) {
+	public String saveBook(@Valid @ModelAttribute(name = "book") Book book, BindingResult result, Model model,
+			@RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+
 		if (result.hasErrors()) {
 			return "new-book";
 		}
 		book.setImage("book.jpg");
 		book.setUsername(mySession.getUsername());
+		book.setImage(storageService.store(imageFile));
 		bookDAO.save(book);
 		List<Book> books = bookDAO.findAll();
 		model.addAttribute("books", books);
