@@ -7,22 +7,80 @@
     <link rel="stylesheet" href="	https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link th:href="@{/styles/customer.css}" rel="stylesheet" />
     <title>Alıcı</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
+
+    <!-- HTML Begin -->
     <div th:replace="menu :: menu"></div>
     <div id="main-content">
 
     </div>
+    <button type="button" data-toggle="modal" data-target="#basketModal" onclick="openBasket()" id="open-basket-btn"
+        class="btn btn-primary">Səbət <span class="badge badge-light" id="basket-book-count">0</span></button>
+    <input id="search-input" class="form-control" placeholder="Axtarış" />
+
+    <div class="modal fade" id="basketModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title">Səbət</h1>
+                    <button type="button" class="close" data-dismiss="modal">x</button>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ad</th>
+                                <th>Qiymət</th>
+                                <th>Miqdar</th>
+                                <th>Ümumi qiymət</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="basket-books-table">
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Bağla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HTML End -->
 
     <script>
+        // JAVASCRIPT Begin 
+        // REFRESH Begin 
         var xht = new XMLHttpRequest();
+        var booksArrayGlobal = [];
+        var basketBooks = [];
+        var basketBooksFromStorage = localStorage.getItem('basketBooks');
+        if (basketBooksFromStorage == null) {
+            localStorage.setItem('basketBooks', '[]');
+        }
+        else {
+            basketBooks = JSON.parse(basketBooksFromStorage);
+        }
+        var openBasketButton = document.getElementById('open-basket-btn');
+        var basketBookCount = document.getElementById('basket-book-count');
+        var basketBooksTable = document.getElementById('basket-books-table');
+        basketBookCount.innerHTML = basketBooks.length;
         xht.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var responseJSON = this.responseText;
 
                 var booksArray = JSON.parse(responseJSON);
                 console.log(booksArray);
+                booksArrayGlobal = booksArray.slice();
 
 
                 var mainContent = document.getElementById('main-content');
@@ -34,14 +92,13 @@
                     mainContentHTML += "<span class='book-image'></span>";
                     mainContentHTML += "<span class='book-name' title='" + book.name + "'>" + book.name + "</span>";
                     mainContentHTML += "<span class='book-price' title='" + book.price + "'>" + book.price + "</span>";
-                    mainContentHTML += "<span class='book-description' title='" + book.description + "'>" + book.description + "</span>";
                     mainContentHTML += "<span class='book-author' title='" + book.author + "'>" + book.author + "</span>";
                     mainContentHTML += "<span class='book-page-count' title='" + book.pageCount + "'>" + book.pageCount + "</span> ";
-                    mainContentHTML += "<div class='add-to-basket'><button " + "class='add-to-basket-btn btn btn-primary'>Səbətə at</button></div>";
+                    mainContentHTML += "<span class='book-description' title='" + book.description + "'>" + book.description + "</span>";
+                    mainContentHTML += "<div class='add-to-basket'><button " + "class='add-to-basket-btn btn btn-primary' onclick='addToBasket(" + book.id + ")'>Səbətə at</button></div>";
+
                     mainContentHTML += "</div></div>";
                 }
-                mainContentHTML += "<button id='open-basket-btn' " + "class='btn btn-primary'>Səbət <span class='badge badge-light'" + ">10</span></button>";
-                mainContentHTML += "<input id='search-input' class='form-control'" + " placeholder='Axtarış'/>";
                 mainContent.innerHTML = mainContentHTML;
 
             }
@@ -49,9 +106,54 @@
         xht.open("GET", "/rest/books", true);
         xht.send();
 
+        // REFRESH END
+        // FUNCTION BEGIN
+        function addToBasket(bookId) {
+            var bookExsistInBasket = false;
+            for (var i = 0; i < basketBooks.length; i++) {
+                var basketBook = basketBooks[i];
+                if (basketBook.book.id == bookId) {
+                    basketBook.count++;
+                    bookExsistInBasket = true;
+                    break;
+                }
+            }
 
+            if (bookExsistInBasket) {
 
+            } else {
+                for (var i = 0; i < booksArrayGlobal.length; i++) {
+                    if (booksArrayGlobal[i].id == bookId) {
+                        var basketBook = { count: 1, book: booksArrayGlobal[i] };
+                        basketBooks.push(basketBook);
+                        break;
+                    }
+                }
+            }
+            openBasketButton.style.display = 'none';
+            basketBookCount.innerHTML = basketBooks.length;
+            localStorage.setItem('basketBooks', JSON.stringify(basketBooks));
+            setTimeout(function () {
+                openBasketButton.style.display = 'block';
+            }, 300);
+        }
 
+        function openBasket() {
+            var basketBooksTableHTML = "";
+            for (var i = 0; i < basketBooks.length; i++) {
+                var basketBook = basketBooks[i];
+                basketBooksTableHTML += "<tr><td>" + basketBook.book.id;
+                basketBooksTableHTML += "</td><td>" + basketBook.book.name;
+                basketBooksTableHTML += "</td><td>" + basketBook.book.price;
+                basketBooksTableHTML += "</td><td>" + basketBook.count;
+                basketBooksTableHTML += "</td><td>" + (basketBook.book.price * basketBook.count);
+                basketBooksTableHTML += "</td><td><button class='btn btn-danger'>X</button>";
+                basketBooksTableHTML += "</td></tr>";
+            }
+            basketBooksTable.innerHTML = basketBooksTableHTML;
+        }
+        // FUNCTION END
+        // JAVASCRIPT End 
     </script>
 
 </body>
