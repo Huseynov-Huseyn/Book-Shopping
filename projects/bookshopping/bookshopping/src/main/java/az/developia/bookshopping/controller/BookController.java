@@ -50,15 +50,19 @@ public class BookController {
 	}
 
 	@PostMapping(path = "/books/new-book-process")
-	public String saveBook(@Valid @ModelAttribute(name = "book") Book book, BindingResult result, Model model,
-			@RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
-
+	public String saveBook(@Valid @ModelAttribute(name = "book") Book book, BindingResult result,
+			@RequestParam(value = "imageFile", required = false) MultipartFile imageFile, Model model) {
+		System.out.println(imageFile);
 		if (result.hasErrors()) {
 			return "new-book";
 		}
-		book.setImage("book.jpg");
+//		book.setImage("book.jpg");
 		book.setUsername(mySession.getUsername());
-		book.setImage(storageService.store(imageFile));
+		if (imageFile.isEmpty() && book.getId() != null) {
+			book.setImage(bookDAO.findById(book.getId()).get().getImage());
+		} else {
+			book.setImage(storageService.store(imageFile));
+		}
 		bookDAO.save(book);
 		List<Book> books = bookDAO.findAll();
 		model.addAttribute("books", books);
