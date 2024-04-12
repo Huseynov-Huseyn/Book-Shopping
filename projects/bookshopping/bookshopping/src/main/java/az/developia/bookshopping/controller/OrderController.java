@@ -11,4 +11,11 @@ public class OrderController {
 		return "orders";
 	}
 
+	@GetMapping(path = "/confirm-order")
+	public String showConfirmOrderPage() {
+
+		return "confirm-order";
+
+	}
+
 }

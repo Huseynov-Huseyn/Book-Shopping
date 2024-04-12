@@ -55,6 +55,7 @@
                     <span id="total-price"></span>
                 </div>
                 <div class="modal-footer">
+                    <a th:href="@{/confirm-order}" class="btn btn-success">Sifarişi təsdiqlə</a>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Bağla</button>
                 </div>
             </div>
@@ -216,12 +217,12 @@
         }
 
         function calculateTotalPrice() {
-            var totalPriceNumber= 0;
+            var totalPriceNumber = 0;
             for (var i = 0; i < basketBooks.length; i++) {
                 var basketBook = basketBooks[i];
                 totalPriceNumber += basketBook.count * basketBook.book.price;
             }
-            totalPrice.innerHTML ='Ümumi qiymət: '+ totalPriceNumber + ' AZN';
+            totalPrice.innerHTML = 'Ümumi qiymət: ' + totalPriceNumber + ' AZN';
         }
         // FUNCTION END
         // JAVASCRIPT End
@@ -229,3 +230,4 @@
 
 </body>
 
+</html>
