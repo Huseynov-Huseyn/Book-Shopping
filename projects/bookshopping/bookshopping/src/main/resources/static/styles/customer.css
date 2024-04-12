@@ -21,8 +21,11 @@
 .book-image {
     display: block;
     width: 100%;
-    background-color: gray;
+    background-color: transparent;
     height:120px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 .book-name,

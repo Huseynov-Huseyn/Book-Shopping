@@ -10,17 +10,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .basket-book-image {
+            width: 30px;
+        }
+    </style>
 </head>
 
 <body>
 
     <!-- HTML Begin -->
     <div th:replace="menu :: menu"></div>
-    <div id="main-content">
-
-    </div>
+    <div id="main-content"></div>
     <button type="button" data-toggle="modal" data-target="#basketModal" onclick="openBasket()" id="open-basket-btn"
-        class="btn btn-primary">Səbət <span class="badge badge-light" id="basket-book-count">0</span></button>
+        class="btn btn-primary">
+        Səbət <span class="badge badge-light" id="basket-book-count">0</span>
+    </button>
     <input id="search-input" class="form-control" placeholder="Axtarış" />
 
     <div class="modal fade" id="basketModal">
@@ -36,6 +41,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Şəkil</th>
                                 <th>Ad</th>
                                 <th>Qiymət</th>
                                 <th>Miqdar</th>
@@ -46,7 +52,7 @@
                         <tbody id="basket-books-table">
                         </tbody>
                     </table>
-
+                    <span id="total-price"></span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Bağla</button>
@@ -66,13 +72,14 @@
         var basketBooksFromStorage = localStorage.getItem('basketBooks');
         if (basketBooksFromStorage == null) {
             localStorage.setItem('basketBooks', '[]');
-        }
-        else {
+        } else {
             basketBooks = JSON.parse(basketBooksFromStorage);
         }
         var openBasketButton = document.getElementById('open-basket-btn');
         var basketBookCount = document.getElementById('basket-book-count');
         var basketBooksTable = document.getElementById('basket-books-table');
+        var totalPrice = document.getElementById('total-price');
+
         basketBookCount.innerHTML = basketBooks.length;
         xht.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -82,20 +89,27 @@
                 console.log(booksArray);
                 booksArrayGlobal = booksArray.slice();
 
-
                 var mainContent = document.getElementById('main-content');
                 var mainContentHTML = "";
                 for (var i = 0; i < booksArray.length; i++) {
                     var book = booksArray[i];
                     mainContentHTML += "<div class='book-container'>";
                     mainContentHTML += "<div class='book'>";
-                    mainContentHTML += "<span class='book-image'></span>";
-                    mainContentHTML += "<span class='book-name' title='" + book.name + "'>" + book.name + "</span>";
-                    mainContentHTML += "<span class='book-price' title='" + book.price + "'>" + book.price + "</span>";
-                    mainContentHTML += "<span class='book-author' title='" + book.author + "'>" + book.author + "</span>";
-                    mainContentHTML += "<span class='book-page-count' title='" + book.pageCount + "'>" + book.pageCount + "</span> ";
-                    mainContentHTML += "<span class='book-description' title='" + book.description + "'>" + book.description + "</span>";
-                    mainContentHTML += "<div class='add-to-basket'><button " + "class='add-to-basket-btn btn btn-primary' onclick='addToBasket(" + book.id + ")'>Səbətə at</button></div>";
+                    mainContentHTML += "<span class='book-image' style='background-image: url(/files/"
+                        + book.image + ");'></span>";
+                    mainContentHTML += "<span class='book-name' title='" + book.name + "'>"
+                        + book.name + "</span>";
+                    mainContentHTML += "<span class='book-price' title='" + book.price + "'>"
+                        + book.price + "</span>";
+                    mainContentHTML += "<span class='book-author' title='" + book.author + "'>"
+                        + book.author + "</span>";
+                    mainContentHTML += "<span class='book-page-count' title='" + book.pageCount + "'>"
+                        + book.pageCount + "</span> ";
+                    mainContentHTML += "<span class='book-description' title='" + book.description + "'>"
+                        + book.description + "</span>";
+                    mainContentHTML += "<div class='add-to-basket'><button "
+                        + "class='add-to-basket-btn btn btn-primary' onclick='addToBasket("
+                        + book.id + ")'>Səbətə at</button></div>";
 
                     mainContentHTML += "</div></div>";
                 }
@@ -124,7 +138,10 @@
             } else {
                 for (var i = 0; i < booksArrayGlobal.length; i++) {
                     if (booksArrayGlobal[i].id == bookId) {
-                        var basketBook = { count: 1, book: booksArrayGlobal[i] };
+                        var basketBook = {
+                            count: 1,
+                            book: booksArrayGlobal[i]
+                        };
                         basketBooks.push(basketBook);
                         break;
                     }
@@ -135,27 +152,80 @@
             localStorage.setItem('basketBooks', JSON.stringify(basketBooks));
             setTimeout(function () {
                 openBasketButton.style.display = 'block';
-            }, 300);
+            }, 120);
         }
 
         function openBasket() {
+            fillBasketTable();
+        }
+
+        function deleteBasketBook(bookId) {
+            for (var i = 0; i < basketBooks.length; i++) {
+                if (basketBooks[i].book.id == bookId) {
+                    basketBooks.splice(i, 1);
+                    break;
+                }
+            }
+            localStorage.setItem('basketBooks', JSON.stringify(basketBooks));
+
+            openBasketButton.style.display = 'none';
+            basketBookCount.innerHTML = basketBooks.length;
+            setTimeout(function () {
+                openBasketButton.style.display = 'block';
+            }, 120);
+
+            fillBasketTable();
+        }
+
+        function fillBasketTable() {
             var basketBooksTableHTML = "";
             for (var i = 0; i < basketBooks.length; i++) {
                 var basketBook = basketBooks[i];
                 basketBooksTableHTML += "<tr><td>" + basketBook.book.id;
+                basketBooksTableHTML += "</td><td>"
+                    + "<img class='basket-book-image' src='/files/" + basketBook.book.image + "'/>";
                 basketBooksTableHTML += "</td><td>" + basketBook.book.name;
                 basketBooksTableHTML += "</td><td>" + basketBook.book.price;
-                basketBooksTableHTML += "</td><td>" + basketBook.count;
-                basketBooksTableHTML += "</td><td>" + (basketBook.book.price * basketBook.count);
-                basketBooksTableHTML += "</td><td><button class='btn btn-danger'>X</button>";
+                basketBooksTableHTML += "</td><td><input "
+                    + " oninput='bookCountChange(" + basketBook.book.id
+                    + ",this.value)' type='number' value='"
+                    + basketBook.count;
+                basketBooksTableHTML += "' /></td><td id='book" + basketBook.book.id + "'>"
+                    + (basketBook.book.price * basketBook.count);
+                basketBooksTableHTML += "</td><td><button onclick='deleteBasketBook("
+                    + basketBook.book.id
+                    + ")'"
+                    + " class='btn btn-danger'>X</button>";
                 basketBooksTableHTML += "</td></tr>";
             }
             basketBooksTable.innerHTML = basketBooksTableHTML;
+            calculateTotalPrice();
+        }
+
+        function bookCountChange(bookId, count) {
+            for (var i = 0; i < basketBooks.length; i++) {
+                var basketBook = basketBooks[i];
+                if (basketBooks[i].book.id == bookId) {
+                    basketBook.count = count;
+                    document.getElementById('book' + basketBook.book.id).innerHTML = (count * basketBook.book.price);
+                    localStorage.setItem('basketBooks', JSON.stringify(basketBooks));
+                    calculateTotalPrice();
+                    break;
+                }
+            }
+        }
+
+        function calculateTotalPrice() {
+            var totalPriceNumber= 0;
+            for (var i = 0; i < basketBooks.length; i++) {
+                var basketBook = basketBooks[i];
+                totalPriceNumber += basketBook.count * basketBook.book.price;
+            }
+            totalPrice.innerHTML ='Ümumi qiymət: '+ totalPriceNumber + ' AZN';
         }
         // FUNCTION END
-        // JAVASCRIPT End 
+        // JAVASCRIPT End
     </script>
 
 </body>
 
-</html>
