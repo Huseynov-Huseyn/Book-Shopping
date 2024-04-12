@@ -1,13 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="	https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <title>Sifarişlər</title>
+<meta charset="utf-8">
+<title>Sifarişlər</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-	<div th:replace="menu :: menu"></div>
-    <h1>Welcome to sifarişlər,sir</h1>
+<div th:replace="menu :: menu"></div>
+<h1>Sifarişlər</h1>
+
+
+
+<table id="orders-table" class="table table-hover table-bordered">
+<thead><tr>
+
+<th>ID</th>
+<th>Tarix</th>
+<th>Müştəri</th>
+<th>Sifariş olunanlar</th>
+<th>Ümumi qiymət</th>
+<th>Qeyd</th>
+
+</tr></thead>
+<tbody>
+<tr th:each="order : ${orders}">
+<td th:text="${order.id}"></td>
+<td th:text="${order.register}"></td>
+
+
+<td>
+<ul>
+</ul>
+</td>
+<td>
+
+<ol>
+<li th:each="basketBook : ${order.basketBooks}">
+
+<span th:text="${basketBook.book.name+' ('+basketBook.count+' ədəd) ('+
+basketBook.book.price+' AZN) (Cəm : '+(basketBook.book.price*basketBook.count)+' AZN)'}"></span>
+
+</li>
+</ol>
+
+</td>
+<td th:text="${order.totalPrice}"></td>
+<td th:text="${order.note}"></td>
+
+
+</tr>
+</tbody>
+</table>
+
+
+
 </body>
 </html>

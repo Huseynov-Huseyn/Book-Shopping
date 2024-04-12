@@ -1,6 +1,7 @@
 package az.developia.bookshopping.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -75,6 +76,9 @@ public class Order {
 	}
 
 	public List<BasketBook> getBasketBooks() {
+		if (basketBooks == null) {
+			basketBooks = new ArrayList<BasketBook>();
+		}
 		return basketBooks;
 	}
 
