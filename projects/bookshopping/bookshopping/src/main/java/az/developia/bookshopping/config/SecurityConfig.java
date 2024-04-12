@@ -35,9 +35,13 @@ public class SecurityConfig {
 				.requestMatchers("/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**",
 						"/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security",
 						"/swagger-ui/**", "/webjars/**", "/swagger-ui html")
-				.permitAll().requestMatchers(HttpMethod.POST, "/create-account-process").permitAll().anyRequest()
-				.authenticated().and().formLogin().loginPage("/show-login").loginProcessingUrl("/authenticate-user")
-				.permitAll().and().logout().and().httpBasic().and().build();
+				.permitAll().requestMatchers(HttpMethod.POST, "/create-account-process").permitAll()
+				.requestMatchers(HttpMethod.GET, "/customer").permitAll().requestMatchers(HttpMethod.GET, "/rest/books")
+				.permitAll().requestMatchers(HttpMethod.POST, "/rest/orders").permitAll()
+				.requestMatchers(HttpMethod.GET, "/confirm-order").permitAll()
+				.requestMatchers(HttpMethod.GET, "/files/**").permitAll().requestMatchers(HttpMethod.GET, "/styles/**")
+				.permitAll().anyRequest().authenticated().and().formLogin().loginPage("/show-login")
+				.loginProcessingUrl("/authenticate-user").permitAll().and().logout().and().httpBasic().and().build();
 
 	}
 
