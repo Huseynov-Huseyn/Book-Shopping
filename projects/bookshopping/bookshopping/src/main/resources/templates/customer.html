@@ -70,6 +70,14 @@
         var xht = new XMLHttpRequest();
         var booksArrayGlobal = [];
         var basketBooks = [];
+
+
+        var searchTextGlobal = '';
+        var begin = 0;
+        var length = 20;
+        var mainContentHTML = "";
+
+
         var basketBooksFromStorage = localStorage.getItem('basketBooks');
         if (basketBooksFromStorage == null) {
             localStorage.setItem('basketBooks', '[]');
@@ -91,7 +99,6 @@
                 booksArrayGlobal = booksArray.slice();
 
                 var mainContent = document.getElementById('main-content');
-                var mainContentHTML = "";
                 for (var i = 0; i < booksArray.length; i++) {
                     var book = booksArray[i];
                     mainContentHTML += "<div class='book-container'>";
@@ -118,8 +125,10 @@
 
             }
         };
-        xht.open("GET", "/rest/books", true);
-        xht.send();
+        xht.open("POST", "/rest/books/search-find-partial", true);
+        xht.setRequestHeader("Content-type", "application/json");
+        var searchObject = { search: '', begin: begin, length: length };
+        xht.send(JSON.stringify(searchObject));
 
         // REFRESH END
         // FUNCTION BEGIN
@@ -229,13 +238,45 @@
             searchTextGlobal = searchText;
             mainContentHTML = "";
             booksArrayGlobal = [];
-            xht.open("POST", "rest/books/search-find-partial", true);
+            xht.open("POST", "/rest/books/search-find-partial", true);
             xht.setRequestHeader("Content-type", "application/json");
             begin = 0;
             var searchObject = { search: searchText, begin: begin, length: length };
 
             xht.send(JSON.stringify(searchObject));
         }
+
+        var counter = 0;
+        var allowScroll = true;
+        function onScroll() {
+            if (allowScroll) {
+
+                const distanceToBottom = document.body.getBoundingClientRect().bottom;
+                const documentHeight = document.documentElement.clientHeight;
+                //console.log('distanceToBottom : '+distanceToBottom);
+                //console.log('documentHeight : '+documentHeight);
+                if (distanceToBottom < documentHeight + 150) {
+                    allowScroll = false;
+                    counter++;
+                    console.log('onScroll : ' + counter);
+
+                    begin += 20;
+
+                    xht.open("POST", "/rest/books/search-find-partial", true);
+                    xht.setRequestHeader("Content-type", "application/json");
+                    var searchObject = { search: searchTextGlobal, begin: begin, length: length };
+                    xht.send(JSON.stringify(searchObject));
+
+                    setTimeout(function () { allowScroll = true; }, 1000);
+
+                }
+            }
+
+
+
+        }
+
+        window.addEventListener("scroll", onScroll);
         // FUNCTION END
         // JAVASCRIPT End
     </script>
