@@ -28,6 +28,11 @@
         </div>
 
         <div class="form-group">
+            <label for="customer-email">Email:</label>
+            <input id="customer-email" type="email" class="form-control" />
+        </div>
+
+        <div class="form-group">
             <label for="order-note">Qeyd: </label>
             <input class="form-control" id="order-note"/>
         </div>
@@ -40,6 +45,7 @@
         var customerAddress = document.getElementById('customer-address');
         var customerPhone = document.getElementById('customer-phone');
         var orderNote = document.getElementById('order-note');
+        var customerEmail = document.getElementById('customer-email');
 
         var order = {};
         var basketBooksFromStorage = localStorage.getItem('basketBooks');
@@ -56,6 +62,7 @@
             order.customer.name = customerName.value;
             order.customer.address = customerAddress.value;
             order.customer.phone = customerPhone.value;
+            order.customer.email = customerEmail.value;
             order.note = orderNote.value;
             console.log(order);
 
