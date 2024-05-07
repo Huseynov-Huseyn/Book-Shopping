@@ -41,4 +41,9 @@ public class BasketBook {
 		this.book = book;
 	}
 
+	@Override
+	public String toString() {
+		return "BasketBook [id=" + id + ", count=" + count + ", book=" + book + "]";
+	}
+
 }

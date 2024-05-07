@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import az.developia.bookshopping.config.MySession;
 import az.developia.bookshopping.dao.OrderDAO;
 import az.developia.bookshopping.model.BasketBook;
 import az.developia.bookshopping.model.Order;
@@ -21,6 +22,9 @@ public class OrderRestController {
 
 	@Autowired
 	private OrderDAO orderDAO;
+
+	@Autowired
+	private MySession mySession;
 
 	@GetMapping
 	public List<Order> findAll() {
@@ -70,5 +74,13 @@ public class OrderRestController {
 	@GetMapping(path = "/{username}")
 	public List<Order> findAllByUsername(@PathVariable(name = "username") String username) {
 		return orderDAO.findAllByUsername(username);
+	}
+
+	@PostMapping(path = "/save-basket-books")
+	public Boolean saveBasketBooks(@RequestBody List<BasketBook> basketBooks) {
+		System.out.println(basketBooks);
+		mySession.setBasketBooks(basketBooks);
+
+		return true;
 	}
 }

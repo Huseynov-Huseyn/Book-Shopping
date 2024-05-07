@@ -1,11 +1,14 @@
 package az.developia.bookshopping.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import az.developia.bookshopping.model.BasketBook;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
@@ -13,6 +16,7 @@ import jakarta.annotation.PreDestroy;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MySession {
 	private String username;
+	private List<BasketBook> basketBooks;
 
 	public MySession() {
 		System.out.println("MYSESSION CONSTRACTOR");
@@ -38,4 +42,13 @@ public class MySession {
 	public void destroySession() {
 		System.out.println("My session Destroy");
 	}
+
+	public List<BasketBook> getBasketBooks() {
+		return basketBooks;
+	}
+
+	public void setBasketBooks(List<BasketBook> basketBooks) {
+		this.basketBooks = basketBooks;
+	}
+
 }

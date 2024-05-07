@@ -40,6 +40,7 @@ public class SecurityConfig {
 				.permitAll().requestMatchers(HttpMethod.POST, "/rest/orders").permitAll()
 				.requestMatchers(HttpMethod.POST, "/rest/books/search").permitAll()
 				.requestMatchers(HttpMethod.POST, "/rest/books/search-find-partial").permitAll()
+				.requestMatchers(HttpMethod.POST, "/rest/orders/save-basket-books").permitAll()
 				.requestMatchers(HttpMethod.GET, "/confirm-order").permitAll()
 				.requestMatchers(HttpMethod.GET, "/order-confirmation-message").permitAll()
 				.requestMatchers(HttpMethod.GET, "/files/**").permitAll().requestMatchers(HttpMethod.GET, "/styles/**")
